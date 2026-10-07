@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',e=>{const i=f.querySelector('[name="cleaning_interval"]');if(i&&Number(i.value)<1){e.preventDefault();alert('Cleaning interval must be greater than 0.');i.focus();}}));});

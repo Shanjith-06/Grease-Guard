@@ -1,0 +1,11 @@
+<?php $pageTitle='Dashboard';require 'includes/header.php';
+$traps=$pdo->query("SELECT * FROM grease_traps ORDER BY trap_code")->fetchAll();$c=['OVERDUE'=>0,'DUE SOON'=>0,'UP TO DATE'=>0];
+foreach($traps as &$t){$t['next']=nextCleaningDate($t['last_cleaned_date'],(int)$t['cleaning_interval']);$t['status']=trapStatus($t['next']);$c[$t['status']]++;}unset($t);?>
+<section class="hero"><div><span class="pill">Cleaning compliance made simple</span><h2>Know what needs cleaning before it becomes a problem.</h2><p>Track grease traps, cleaning dates and inspection-ready records from one simple dashboard.</p></div><div class="hero-icon">✓</div></section>
+<section class="stats"><div><small>Total Traps</small><b><?=count($traps)?></b><em>Registered traps</em></div><div class="danger"><small>Overdue</small><b><?=$c['OVERDUE']?></b><em>Need attention</em></div><div class="warning"><small>Due Soon</small><b><?=$c['DUE SOON']?></b><em>Within 7 days</em></div><div class="success"><small>Up To Date</small><b><?=$c['UP TO DATE']?></b><em>More than 7 days away</em></div></section>
+<section class="panel"><div class="panel-head"><div><h3>Grease Trap Status</h3><p>Current schedule for GreenLeaf Commercial Kitchen.</p></div><a class="btn secondary" href="traps.php">View All</a></div>
+<div class="table-wrap"><table><thead><tr><th>Trap</th><th>Location</th><th>Last Cleaned</th><th>Next Cleaning</th><th>Status</th><th>Action</th></tr></thead><tbody>
+<?php foreach($traps as $t):?><tr><td><strong><?=h($t['trap_code'])?></strong></td><td><?=h($t['location'])?></td><td><?=date('d M Y',strtotime($t['last_cleaned_date']))?></td><td><?=date('d M Y',strtotime($t['next']))?></td><td><span class="status <?=statusClass($t['status'])?>"><?=h($t['status'])?></span></td><td><a class="link" href="edit_trap.php?id=<?=$t['id']?>">Edit</a></td></tr><?php endforeach;?>
+</tbody></table></div></section>
+<section class="info"><div><b>30</b><h3>Simple schedule</h3><p>Each trap has a configurable interval.</p></div><div><b>7</b><h3>Due-soon window</h3><p>Upcoming cleaning is highlighted automatically.</p></div><div><b>✓</b><h3>Cleaning proof</h3><p>Keep a basic history of completed cleanings.</p></div></section>
+<?php require 'includes/footer.php';?>

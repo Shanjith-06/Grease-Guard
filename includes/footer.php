@@ -1,0 +1,1 @@
+</main></div><footer class="footer">GreaseGuard · Web Technology Laboratory Project · GreenLeaf Commercial Kitchen</footer><script src="js/script.js"></script></body></html>
